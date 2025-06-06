@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Switch Weather Advice</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f0f8ff;
+        }
+
+        #outputText {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        select, a {
+            font-size: 1rem;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .sunny { background-color: #ffeb3b; color: #e65100; }
+        .windy { background-color: #e0f7fa; color: #00796b; }
+        .rainy { background-color: #b3e5fc; color: #01579b; }
+        .snowy { background-color: #e0f7fa; color: #37474f; }
+        .cloudy { background-color: #cfd8dc; color: #263238; }
+    </style>
+</head>
+<body>
+    <label for="weather">What's the weather like?</label>
+    <select id="weather">
+        <option value="sunny">Sunny ☀️</option>
+        <option value="windy">Windy 🌬️</option>
+        <option value="rainy">Rainy 🌧️</option>
+        <option value="snowy">Snowy ❄️</option>
+        <option value="cloudy">Cloudy ☁️</option>
+    </select>
+
+    <a href="#" onclick="btnPressed()">GO!</a>
+    <p id="outputText">Weather advice: </p>
+
+    <script>
+        function btnPressed() {
+            const weatherSelected = document.getElementById("weather").value;
+            const output = document.getElementById("outputText");
+
+            let advice = "";
+            let cssClass = "";
+
+            switch (weatherSelected) {
+                case "sunny":
+                    advice = "Wear your sunglasses! 😎";
+                    cssClass = "sunny";
+                    break;
+                case "windy":
+                    advice = "Wear a jacket, it's windy! 🍃";
+                    cssClass = "windy";
+                    break;
+                case "rainy":
+                    advice = "Take an umbrella! ☔";
+                    cssClass = "rainy";
+                    break;
+                case "snowy":
+                    advice = "Bundle up, it's snowy! 🧣🧤";
+                    cssClass = "snowy";
+                    break;
+                case "cloudy":
+                    advice = "It’s a cloudy day, maybe carry a light sweater. 🌥️";
+                    cssClass = "cloudy";
+                    break;
+                default:
+                    advice = "No advice available.";
+            }
+
+            output.innerHTML = "Weather advice: " + advice;
+            output.className = cssClass; // Apply dynamic style
+        }
+    </script>
+</body>
+</html>

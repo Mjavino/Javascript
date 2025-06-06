@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+            background-color: #f2f2f2;
+        }
+
+        form {
+            background-color: white;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #aaa;
+        }
+
+        label, input {
+            display: block;
+            margin: 10px auto;
+            font-size: 1rem;
+        }
+
+        input {
+            padding: 5px;
+            width: 200px;
+        }
+
+        #message {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <p>Welcome. Please log in.</p>
+    <form onsubmit="return verifyUser()">
+        <label for="usernameInput">Username:</label>
+        <input type="text" id="usernameInput" required />
+
+        <label for="passwordInput">Password:</label>
+        <input type="password" id="passwordInput" required />
+
+        <p id="message"></p>
+        
+        <button type="submit">Log in</button>
+    </form>
+
+    <script>
+        function verifyUser() {
+            const username = document.getElementById("usernameInput").value;
+            const password = document.getElementById("passwordInput").value;
+
+            const messageEl = document.getElementById("message");
+            const systemUsername = "Miyambu89";
+            const systemPassword = "9408";
+
+            if (username === systemUsername && password === systemPassword) {
+                messageEl.innerHTML = "Correct. Logging you in...";
+                messageEl.className = "success";
+            } else {
+                messageEl.innerHTML = "Username or password is incorrect.";
+                messageEl.className = "error";
+            }
+
+            return false; // prevent form from submitting
+        }
+    </script>
+</body>
+</html>

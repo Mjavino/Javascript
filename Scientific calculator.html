@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Scientific Calculator</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 50px auto;
+        }
+        td {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+        }
+        input {
+            width: 100%;
+            height: 60px;
+            font-size: 24px;
+            text-align: right;
+            padding-right: 10px;
+        }
+        td.operatorButton {
+            background-color: #ffd966;
+        }
+        td.digitButton {
+            background-color: #d9ead3;
+        }
+        td.ACButton {
+            background-color: #f4cccc;
+        }
+    </style>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td colspan="4">
+                <input type="text" id="inputBox" value="0" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td onclick="square()">x²</td>
+            <td onclick="cube()">x³</td>
+            <td onclick="squareRoot()">√x</td>
+            <td onclick="reciprocal()">1/x</td>
+        </tr>
+        <tr>
+            <td onclick="powerMode()">xʼy</td>
+            <td onclick="log10()">log</td>
+            <td onclick="ln()">ln</td>
+            <td onclick="btnACPressed()">AC</td>
+        </tr>
+        <tr>
+            <td onclick="sin()">sin</td>
+            <td onclick="cos()">cos</td>
+            <td onclick="tan()">tan</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(7)">7</td>
+            <td class="digitButton" onclick="digitBtnPressed(8)">8</td>
+            <td class="digitButton" onclick="digitBtnPressed(9)">9</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('x')">x</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(4)">4</td>
+            <td class="digitButton" onclick="digitBtnPressed(5)">5</td>
+            <td class="digitButton" onclick="digitBtnPressed(6)">6</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed(1)">1</td>
+            <td class="digitButton" onclick="digitBtnPressed(2)">2</td>
+            <td class="digitButton" onclick="digitBtnPressed(3)">3</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
+        </tr>
+        <tr>
+            <td class="digitButton" colspan="2" onclick="digitBtnPressed(0)">0</td>
+            <td class="ACButton" onclick="btnACPressed()">AC</td>
+            <td class="operatorButton" onclick="equalsBtnPressed()">=</td>
+        </tr>
+    </table>
+
+    <script>
+        var newline = true;
+        var value1;
+        var currentOperator;
+
+        function digitBtnPressed(button) {
+            if (newline) {
+                document.getElementById("inputBox").value = button;
+                newline = false;
+            } else {
+                var currentValue = document.getElementById("inputBox").value;
+                document.getElementById("inputBox").value = currentValue + button;
+            }
+        }
+
+        function btnACPressed() {
+            document.getElementById("inputBox").value = 0;
+            value1 = undefined;
+            currentOperator = undefined;
+            newline = true;
+        }
+
+        function operatorBtnPressed(operator) {
+            currentOperator = operator;
+            value1 = parseFloat(document.getElementById("inputBox").value);
+            newline = true;
+        }
+
+        function equalsBtnPressed() {
+            var value2 = parseFloat(document.getElementById("inputBox").value);
+            var finalTotal;
+
+            switch (currentOperator) {
+                case "+": finalTotal = value1 + value2; break;
+                case "-": finalTotal = value1 - value2; break;
+                case "x": finalTotal = value1 * value2; break;
+                case "/": finalTotal = value1 / value2; break;
+                case "power": finalTotal = Math.pow(value1, value2); break;
+                default: finalTotal = value2;
+            }
+
+            document.getElementById("inputBox").value = finalTotal;
+            value1 = undefined;
+            currentOperator = undefined;
+            newline = true;
+        }
+
+        function square() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            document.getElementById("inputBox").value = value * value;
+            newline = true;
+        }
+
+        function cube() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            document.getElementById("inputBox").value = value * value * value;
+            newline = true;
+        }
+
+        function squareRoot() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            if (value < 0) { alert("Cannot take square root of negative number"); return; }
+            document.getElementById("inputBox").value = Math.sqrt(value);
+            newline = true;
+        }
+
+        function reciprocal() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            if (value === 0) { alert("Cannot divide by zero"); return; }
+            document.getElementById("inputBox").value = 1 / value;
+            newline = true;
+        }
+
+        function powerMode() {
+            value1 = parseFloat(document.getElementById("inputBox").value);
+            currentOperator = "power";
+            newline = true;
+        }
+
+        function log10() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            if (value <= 0) { alert("Logarithm undefined for non-positive numbers"); return; }
+            document.getElementById("inputBox").value = Math.log10(value);
+            newline = true;
+        }
+
+        function ln() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            if (value <= 0) { alert("Natural logarithm undefined for non-positive numbers"); return; }
+            document.getElementById("inputBox").value = Math.log(value);
+            newline = true;
+        }
+
+        function sin() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            document.getElementById("inputBox").value = Math.sin(degreesToRadians(value));
+            newline = true;
+        }
+
+        function cos() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            document.getElementById("inputBox").value = Math.cos(degreesToRadians(value));
+            newline = true;
+        }
+
+        function tan() {
+            let value = parseFloat(document.getElementById("inputBox").value);
+            document.getElementById("inputBox").value = Math.tan(degreesToRadians(value));
+            newline = true;
+        }
+
+        function degreesToRadians(deg) {
+            return deg * Math.PI / 180;
+        }
+    </script>
+</body>
+</html>
