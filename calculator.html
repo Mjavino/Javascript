@@ -7,6 +7,11 @@
 <body>
     <table border="1">
         <tr>
+        <td colspan="4">
+            <input type="text" id="historyBox" value="" readonly style="text-align:right; color: gray;">
+        </td>
+    </tr>
+        <tr>
             <td colspan="4">
                 <input type="text" id="inputBox" value="0" readonly>
             </td>
@@ -30,68 +35,96 @@
             <td onclick="operatorBtnPressed('+')">+</td>
         </tr>
         <tr>
-            <td colspan="2" onclick="digitBtnPressed(0)">0</td>
+            <td colspan="1" onclick="digitBtnPressed(0)">0</td>
             <td onclick="btnACPressed()">AC</td>
+            <td onclick="backspacePressed()">🔙</td>
             <td onclick="operatorBtnPressed('/')">/</td>
+            
         </tr>
         <tr>
-            <td colspan="4" onclick="equalsPressed()">=</td>
+            
+            <td colspan="2" onclick="equalsPressed()">=</td>
+            <td onclick="clearEntryPressed()">🧹</td>
         </tr>
+        
     </table>
 
     <script>
-        let newline = true;
-        let value1 = null;
-        let currentOperator = null;
+    let newline = true;
+let value1 = null;
+let currentOperator = null;
 
-        function digitBtnPressed(button) {
-            const inputBox = document.getElementById("inputBox");
-            if (newline) {
-                inputBox.value = button;
-                newline = false;
-            } else {
-                inputBox.value += button;
-            }
-        }
+function digitBtnPressed(button) {
+    const inputBox = document.getElementById("inputBox");
+    if (newline) {
+        inputBox.value = button;
+        newline = false;
+    } else {
+        inputBox.value += button;
+    }
+}
 
-        function btnACPressed() {
-            document.getElementById("inputBox").value = "0";
-            value1 = null;
-            currentOperator = null;
-            newline = true;
-        }
+function btnACPressed() {
+    document.getElementById("inputBox").value = "0";
+    document.getElementById("historyBox").value = "";
+    value1 = null;
+    currentOperator = null;
+    newline = true;
+}
 
-        function operatorBtnPressed(operator) {
-            value1 = parseFloat(document.getElementById("inputBox").value);
-            currentOperator = operator;
-            newline = true;
-        }
+function operatorBtnPressed(operator) {
+    const inputBox = document.getElementById("inputBox");
+    value1 = parseFloat(inputBox.value);
+    currentOperator = operator;
+    document.getElementById("historyBox").value = inputBox.value + " " + operator;
+    newline = true;
+}
 
-        function equalsPressed() {
-            const value2 = parseFloat(document.getElementById("inputBox").value);
-            let result;
+function equalsPressed() {
+    const inputBox = document.getElementById("inputBox");
+    const value2 = parseFloat(inputBox.value);
+    let result;
 
-            switch (currentOperator) {
-                case '+':
-                    result = value1 + value2;
-                    break;
-                case '-':
-                    result = value1 - value2;
-                    break;
-                case '*':
-                    result = value1 * value2;
-                    break;
-                case '/':
-                    result = value2 !== 0 ? value1 / value2 : 'Error';
-                    break;
-                default:
-                    result = value2;
-            }
+    switch (currentOperator) {
+        case '+':
+            result = value1 + value2;
+            break;
+        case '-':
+            result = value1 - value2;
+            break;
+        case '*':
+            result = value1 * value2;
+            break;
+        case '/':
+            result = value2 !== 0 ? value1 / value2 : 'Error';
+            break;
+        default:
+            result = value2;
+    }
 
-            document.getElementById("inputBox").value = result;
-            value1 = result;
-            newline = true;
-        }
+    document.getElementById("inputBox").value = result;
+    if (currentOperator !== null && value1 !== null) {
+        document.getElementById("historyBox").value = value1 + " " + currentOperator + " " + value2 + " =";
+    }
+
+    value1 = typeof result === 'number' ? result : null;
+    currentOperator = null;
+    newline = true;
+}
+        function backspacePressed() {
+    const inputBox = document.getElementById("inputBox");
+    if (!newline && inputBox.value.length > 1) {
+        inputBox.value = inputBox.value.slice(0, -1);
+    } else {
+        inputBox.value = "0";
+        newline = true;
+    }
+}
+
+function clearEntryPressed() {
+    document.getElementById("inputBox").value = "0";
+    newline = true;
+}
     </script>
 </body>
 </html>
